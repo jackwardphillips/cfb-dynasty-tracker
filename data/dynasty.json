@@ -157,6 +157,8 @@
     }
   ],
   "hero": {
+    "category": "standings",
+    "tag": "Standings",
     "badge": "Dynasty Central",
     "icon": "ti-trophy",
     "title": "San Diego State and Fresno State open a new two-coach dynasty era",
@@ -165,7 +167,8 @@
   "stories": [
     {
       "id": "story-donnel-pumphrey",
-      "tag": "User Team",
+      "category": "standings",
+      "tag": "Standings",
       "title": "Donnel Pumphrey starts his head coaching career at San Diego State",
       "deck": "The Aztecs begin a new era with a familiar face in charge.",
       "body": "",
@@ -175,7 +178,8 @@
     },
     {
       "id": "story-david-carr",
-      "tag": "User Team",
+      "category": "standings",
+      "tag": "Standings",
       "title": "David Carr returns to Fresno State looking to build a Bulldog contender",
       "deck": "The Bulldogs hand the program to one of its most recognizable names.",
       "body": "",
@@ -185,7 +189,8 @@
     },
     {
       "id": "story-rivalry-watch",
-      "tag": "Rivalry Watch",
+      "category": "schedule",
+      "tag": "Schedule",
       "title": "Aztecs and Bulldogs circle their matchup as the dynasty's first measuring stick",
       "deck": "The first meeting between the two user teams will set the tone for the season.",
       "body": "",
@@ -195,7 +200,8 @@
     },
     {
       "id": "story-conference-race",
-      "tag": "Conference Race",
+      "category": "rankings",
+      "tag": "Rankings",
       "title": "Mountain West title path runs through consistent recruiting and clean road wins",
       "deck": "The top of the league should be decided by depth, discipline, and weekly execution.",
       "body": "",
@@ -207,6 +213,8 @@
   "headlines": [
     {
       "id": "headline-donnel",
+      "category": "standings",
+      "tag": "Standings",
       "title": "San Diego State names Donnel Pumphrey head coach for the 2027 dynasty campaign",
       "deck": "",
       "body": "",
@@ -214,6 +222,8 @@
     },
     {
       "id": "headline-david",
+      "category": "standings",
+      "tag": "Standings",
       "title": "Fresno State announces David Carr as head coach, bringing a program legend back home",
       "deck": "",
       "body": "",
@@ -221,6 +231,8 @@
     },
     {
       "id": "headline-rivalry",
+      "category": "schedule",
+      "tag": "Schedule",
       "title": "Mountain West coaches expect Aztecs-Bulldogs rivalry to shape the conference race",
       "deck": "",
       "body": "",
@@ -228,6 +240,8 @@
     },
     {
       "id": "headline-recruiting",
+      "category": "recruiting",
+      "tag": "Recruiting",
       "title": "Both user programs begin season with clean recruiting boards and open depth chart questions",
       "deck": "",
       "body": "",
@@ -235,7 +249,27 @@
     },
     {
       "id": "headline-launch",
+      "category": "scores",
+      "tag": "Scores",
       "title": "Dynasty tracker launches with scores, rankings, headlines, and user-team notes",
+      "deck": "",
+      "body": "",
+      "image": ""
+    },
+    {
+      "id": "headline-stats",
+      "category": "stats",
+      "tag": "Stats",
+      "title": "Early season stats projections favor veteran offensive lines in the Mountain West",
+      "deck": "",
+      "body": "",
+      "image": ""
+    },
+    {
+      "id": "headline-playoff",
+      "category": "playoff",
+      "tag": "Playoff",
+      "title": "New 12-team playoff format gives Mountain West champion a clear path to the postseason",
       "deck": "",
       "body": "",
       "image": ""

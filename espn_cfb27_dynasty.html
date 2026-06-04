@@ -5,114 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>College Football - ESPN</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
-<style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f0f0; }
-  .espn-nav { background: #CC0000; padding: 0 16px; display: flex; align-items: center; gap: 20px; height: 50px; }
-  .espn-logo { display: flex; align-items: center; }
-  .espn-logo img { height: 28px; filter: brightness(0) invert(1); }
-  .espn-nav-links { display: flex; gap: 18px; }
-  .espn-nav-links a { color: rgba(255,255,255,0.85); font-size: 13px; text-decoration: none; }
-  .espn-nav-links a:hover { color: white; }
-  .espn-subnav { 
-    background: #1a1a1a; padding: 0 16px; display: flex; gap: 20px; height: 38px; align-items: center; border-bottom: 2px solid #CC0000; overflow-x: auto;
-    scrollbar-width: none; -ms-overflow-style: none;
-  }
-  .espn-subnav::-webkit-scrollbar { display: none; }
-  .espn-subnav a { color: rgba(255,255,255,0.5); font-size: 12px; text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; font-weight: 500; }
-  .espn-subnav a.active { color: white; font-weight: 700; }
-  .score-ticker { 
-    background: #1a1a1a; padding: 0 16px; display: flex; gap: 24px; overflow-x: auto; border-bottom: 1px solid #333; height: 65px; align-items: center;
-    scrollbar-width: none; -ms-overflow-style: none;
-  }
-  .score-ticker::-webkit-scrollbar { display: none; }
-  .ticker-game { display: flex; flex-direction: column; gap: 2px; min-width: 130px; }
-  .ticker-team { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-  .ticker-team span { color: white; font-size: 12px; font-weight: 500; }
-  .ticker-score { color: white; font-size: 12px; font-weight: 500; }
-  .ticker-winner { color: #FFD700 !important; }
-  .ticker-team-name { display: inline-flex; align-items: baseline; gap: 4px; min-width: 0; }
-  .ticker-team .ticker-rank { color: #aaa; font-size: 9px; font-weight: 700; line-height: 1; min-width: 10px; transform: translateY(1px); }
-  .ticker-status { color: #aaa; font-size: 10px; text-transform: uppercase; margin-top: 2px; }
-  .live-badge { background: #CC0000; color: white; font-size: 9px; font-weight: 600; padding: 1px 5px; border-radius: 2px; letter-spacing: 0.5px; }
-  .espn-body { display: grid; grid-template-columns: 1fr 300px; gap: 16px; padding: 16px; max-width: 1040px; margin: 0 auto; }
-  .section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #666; border-bottom: 1px solid #ddd; padding-bottom: 6px; margin-bottom: 12px; }
-  .hero-card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
-  .hero-img { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); height: 200px; display: flex; align-items: center; justify-content: center; position: relative; }
-  .hero-badge { position: absolute; top: 12px; left: 12px; background: #CC0000; color: white; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 3px; letter-spacing: 0.5px; text-transform: uppercase; }
-  .hero-icon { color: rgba(255,255,255,0.12); font-size: 64px; }
-  .hero-content { padding: 14px 16px; }
-  .hero-title { font-size: 17px; font-weight: 600; color: #111; line-height: 1.35; margin-bottom: 6px; }
-  .hero-desc { font-size: 13px; color: #555; line-height: 1.5; }
-  .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
-  .story-card, .headline-item { appearance: none; border: 0; background: none; text-align: left; font: inherit; cursor: pointer; }
-  .story-card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; }
-  .story-img { height: 100px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
-  .story-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .story-img .story-photo { position: absolute; inset: 0; }
-  .story-img .story-icon { position: relative; z-index: 1; font-size: 40px; color: rgba(255,255,255,0.12); }
-  .story-content { padding: 10px 12px; }
-  .story-tag { font-size: 10px; font-weight: 700; color: #CC0000; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
-  .story-title { font-size: 13px; font-weight: 500; color: #111; line-height: 1.35; }
-  .headlines-card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
-  .headline-item { padding: 7px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; color: #222; line-height: 1.4; display: flex; align-items: flex-start; gap: 8px; width: 100%; }
-  .headline-item:last-child { border-bottom: none; padding-bottom: 0; }
-  .hl-dot { color: #CC0000; margin-top: 5px; font-size: 8px; flex-shrink: 0; }
-  .headline-thumb { width: 28px; height: 28px; border-radius: 4px; object-fit: cover; flex-shrink: 0; background: #eee; }
-  .headline-text { flex: 1; min-width: 0; }
-  .sidebar-card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
-  .user-team { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
-  .user-team:last-child { border-bottom: none; padding-bottom: 0; }
-  .user-team-main { display: flex; align-items: center; gap: 8px; min-width: 0; }
-  .user-team-name { font-size: 13px; font-weight: 600; color: #111; }
-  .user-team-coach { font-size: 11px; color: #777; margin-top: 2px; }
-  .score-card { padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
-  .score-card:last-child { border-bottom: none; }
-  .score-teams { display: flex; justify-content: space-between; font-size: 13px; font-weight: 500; }
-  .score-teams .winner { color: #111; }
-  .score-teams .loser { color: #888; }
-  .score-info { font-size: 11px; color: #888; margin-top: 2px; }
-  .rankings-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; border-bottom: 1px solid #ddd; padding-bottom: 6px; margin-bottom: 12px; }
-  .rankings-header .section-label { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
-  .week-select { border: 1px solid #d5d5d5; border-radius: 4px; background: white; color: #333; font-size: 11px; padding: 3px 6px; }
-  .rank-pill { font-size: 10px; color: #888; background: #f0f0f0; padding: 1px 5px; border-radius: 3px; margin-right: 4px; }
-  .standings-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
-  .standings-row:last-child { border-bottom: none; }
-  .standings-team { display: flex; align-items: center; gap: 6px; color: #111; }
-  .rank-logo { width: 16px; height: 16px; object-fit: contain; display: block; flex-shrink: 0; }
-  .standings-rec { color: #888; }
-  .team-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-  .trending-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
-  .trending-item:last-child { border-bottom: none; }
-  .trend-num { font-size: 18px; font-weight: 600; color: #ccc; min-width: 20px; }
-  .trend-text { font-size: 13px; color: #222; line-height: 1.3; }
-  .espn-footer { background: #1a1a1a; padding: 12px 16px; margin-top: 8px; }
-  .espn-footer p { font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; }
-  .article-modal { position: fixed; inset: 0; z-index: 50; display: none; }
-  .article-modal.open { display: block; }
-  .article-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.55); }
-  .article-panel { position: relative; margin: 24px auto; width: min(920px, calc(100vw - 24px)); max-height: calc(100vh - 48px); overflow: auto; background: #fff; border-radius: 12px; border: 1px solid #d9d9d9; box-shadow: 0 24px 70px rgba(0,0,0,0.28); }
-  .article-panel-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 16px 16px 12px; border-bottom: 1px solid #ececec; }
-  .article-kicker { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #CC0000; margin-bottom: 4px; }
-  .article-panel-title { font-size: 16px; font-weight: 700; color: #111; line-height: 1.3; }
-  .icon-button { appearance: none; border: 1px solid #e0e0e0; background: #fff; color: #444; width: 32px; height: 32px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-  .article-panel-body { display: grid; grid-template-columns: 260px 1fr; gap: 16px; padding: 16px; }
-  .article-preview { border: 1px solid #e5e5e5; border-radius: 10px; overflow: hidden; background: #f7f7f7; min-height: 320px; display: flex; align-items: center; justify-content: center; position: relative; }
-  .article-preview img { width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; }
-  .article-preview-fallback { color: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; font-size: 64px; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
-  .article-upload { margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid #d5d5d5; border-radius: 6px; background: #fff; color: #222; cursor: pointer; font-size: 12px; font-weight: 600; }
-  .article-upload input { display: none; }
-  .article-fields { display: grid; gap: 12px; }
-  .field-label { display: grid; gap: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; color: #666; }
-  .field-control { width: 100%; border: 1px solid #d9d9d9; border-radius: 8px; padding: 10px 12px; font: inherit; color: #111; background: #fff; }
-  .field-control:focus { outline: none; border-color: #b8b8b8; box-shadow: 0 0 0 2px rgba(204,0,0,0.08); }
-  .field-control textarea, textarea.field-control { min-height: 120px; resize: vertical; }
-  .article-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 0 16px 16px; }
-  .action-button { appearance: none; border: 1px solid #d5d5d5; background: #fff; color: #222; border-radius: 6px; padding: 8px 12px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
-  .action-button.primary { background: #CC0000; border-color: #CC0000; color: #fff; }
-  @media (max-width: 700px) { .espn-body { grid-template-columns: 1fr; } .story-grid { grid-template-columns: 1fr; } }
-  @media (max-width: 800px) { .article-panel-body { grid-template-columns: 1fr; } .article-preview { min-height: 220px; } }
-</style>
+<link rel="stylesheet" href="css/espn.css">
 </head>
 <body>
 
@@ -326,6 +219,7 @@
         <i class="ti ${escapeHtml(hero.icon)} hero-icon"></i>
       </div>
       <div class="hero-content">
+        <div class="story-tag">${escapeHtml(hero.tag)}</div>
         <div class="hero-title">${escapeHtml(hero.title)}</div>
         <div class="hero-desc">${escapeHtml(hero.description)}</div>
       </div>
@@ -360,7 +254,10 @@
       return `
       <button type="button" class="headline-item" data-article-id="${escapeHtml(item.id)}">
         ${thumb}
-        <span class="headline-text">${escapeHtml(item.title || 'Untitled headline')}</span>
+        <div class="headline-text">
+          <div class="headline-tag">${escapeHtml(item.tag)}</div>
+          <span class="headline-text-inner">${escapeHtml(item.title || 'Untitled headline')}</span>
+        </div>
       </button>
     `; }).join('');
   }

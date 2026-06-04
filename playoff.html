@@ -1,53 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CFB 27 - playoff</title>
-  <style>
-    body { margin: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f4f4; color: #333; }
-    .espn-header { background: #CC0000; height: 50px; display: flex; align-items: center; padding: 0 16px; color: white; }
-    .espn-nav-links { display: flex; gap: 18px; }
-    .espn-nav-links a { color: rgba(255,255,255,0.85); font-size: 13px; text-decoration: none; }
-    .espn-nav-links a:hover { color: white; }
-    .espn-logo { display: flex; align-items: center; margin-right: 24px; }
-    .espn-logo img { height: 38px; filter: brightness(0) invert(1); }
-    .espn-subnav { background: #1a1a1a; padding: 0 16px; display: flex; gap: 20px; height: 38px; align-items: center; border-bottom: 2px solid #CC0000; overflow-x: auto; scrollbar-width: none; }
-    .espn-subnav::-webkit-scrollbar { display: none; }
-    .espn-subnav a { color: rgba(255,255,255,0.5); font-weight: 500; font-size: 12px; text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
-    .espn-subnav a.active { color: white; font-weight: 700; }
-    .content { padding: 40px; text-align: center; }
-    h1 { color: #1a1a1a; text-transform: uppercase; }
-    .placeholder-msg { color: #666; font-size: 18px; }
-    .back-btn { display: inline-block; margin-top: 20px; padding: 10px 20px; background: #CC0000; color: white; text-decoration: none; border-radius: 4px; font-weight: bold; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>College Football Playoff - ESPN</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="css/espn.css">
 </head>
 <body>
-  <div class="espn-header">
-    <div class="espn-logo"><img src="espn_full_logo.png" alt="ESPN"></div>
-    <div class="espn-nav-links">
-      <a href="#">Scores</a>
-      <a href="#">Watch</a>
-      <a href="#">NFL</a>
-      <a href="#">CFB</a>
-      <a href="#">NBA</a>
-      <a href="#">More</a>
+<div class="espn-nav">
+  <div class="espn-logo"><img src="espn_full_logo.png" alt="ESPN"></div>
+  <div class="espn-nav-links"><a href="#">Scores</a><a href="#">Watch</a><a href="#">NFL</a><a href="#">CFB</a><a href="#">NBA</a><a href="#">More</a></div>
+</div>
+<div class="espn-subnav">
+  <a href="espn_cfb27_dynasty.html">Home</a><a href="scores.html">Scores</a><a href="schedule.html">Schedule</a><a href="standings.html">Standings</a><a href="rankings.html">Rankings</a><a href="stats.html">Stats</a><a href="recruiting.html">Recruiting</a><a href="playoff.html" class="active">Playoff</a>
+</div>
+<div class="score-ticker" id="score-ticker"></div>
+<div class="espn-body">
+  <div class="main-col">
+    <div class="page-header">
+      <h1 class="page-title">CFB Playoff</h1>
+      <p class="page-subtitle">The road to the 2027 National Championship</p>
+    </div>
+    <div class="sidebar-card">
+      <div class="score-info" style="font-size: 14px; text-align: center; padding: 40px 20px;">
+        <i class="ti ti-trophy" style="font-size: 48px; color: #ddd; display: block; margin-bottom: 12px;"></i>
+        Playoff projections will update as the season progresses.
+      </div>
     </div>
   </div>
-  <div class="espn-subnav">
-    <a href="espn_cfb27_dynasty.html">Home</a>
-    <a href="scores.html">Scores</a>
-    <a href="schedule.html">Schedule</a>
-    <a href="standings.html">Standings</a>
-    <a href="rankings.html">Rankings</a>
-    <a href="stats.html">Stats</a>
-    <a href="recruiting.html">Recruiting</a>
-    <a href="playoff.html" class="active">Playoff</a>
+  <div class="sidebar">
+    <div class="sidebar-card">
+      <div class="section-label">Recent Playoff News</div>
+      <div id="page-news-list"></div>
+    </div>
   </div>
-  <div class="content">
-    <h1>playoff</h1>
-    <p class="placeholder-msg">This page is coming soon. We're working on gathering the data for your CFB 27 Dynasty.</p>
-    <a href="espn_cfb27_dynasty.html" class="back-btn">Back to Dashboard</a>
-  </div>
+</div>
+<div class="espn-footer"><p>&copy; 2027 ESPN Inc. All rights reserved.</p></div>
+<script src="js/app-model.js"></script>
+<script>
+  async function init() {
+    const data = await AppModel.load();
+    if (!data) return;
+    AppModel.renderTicker(document.getElementById('score-ticker'), data.tickerGames);
+    AppModel.renderPageNews(document.getElementById('page-news-list'), 'playoff');
+  }
+  init();
+</script>
 </body>
 </html>
