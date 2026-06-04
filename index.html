@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>College Football - ESPN</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<link rel="stylesheet" href="css/espn.css">
+</head>
+<body>
+
+<div class="espn-nav">
+  <div class="espn-logo"><img src="espn_full_logo.png" alt="ESPN"></div>
+  <div class="espn-nav-links">
+    <a href="#">Scores</a>
+    <a href="#">Watch</a>
+    <a href="#">NFL</a>
+    <a href="#">CFB</a>
+    <a href="#">NBA</a>
+    <a href="#">More</a>
+  </div>
+</div>
+
+<div class="espn-subnav">
+  <a href="espn_cfb27_dynasty.html" class="active">Home</a>
+  <a href="schedule.html">Schedule</a>
+  <a href="standings.html">Standings</a>
+  <a href="rankings.html">Rankings</a>
+  <a href="stats.html">Stats</a>
+  <a href="recruiting.html">Recruiting</a>
+  <a href="playoff.html">Playoff</a>
+</div>
+
+<div class="score-ticker" id="score-ticker"></div>
+
+<div class="espn-body">
+  <div class="main-col">
+    <div class="hero-card" id="hero-card"></div>
+    <div class="story-grid" id="story-grid"></div>
+    <div class="headlines-card">
+      <div class="section-label">Top Headlines</div>
+      <div id="headlines-list"></div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="sidebar-card">
+      <div class="section-label">Next Week</div>
+      <div id="recent-scores"></div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="rankings-header">
+        <div class="section-label">AP Top 25</div>
+        <select class="week-select" id="rankings-week"></select>
+      </div>
+      <div id="rankings-list"></div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="section-label">Trending</div>
+      <div id="trending-list"></div>
+    </div>
+  </div>
+</div>
+
+<div class="espn-footer">
+  <p>&copy; 2027 ESPN Inc. All rights reserved. Use of this site constitutes acceptance of our Terms of Use and Privacy Policy.</p>
+</div>
+
+<div class="article-modal" id="article-modal" aria-hidden="true">
+  <div class="article-backdrop" data-close-modal="1"></div>
+  <div class="article-panel" role="dialog" aria-modal="true" aria-labelledby="article-modal-title">
+    <div class="article-panel-header">
+      <div>
+        <div class="article-kicker" id="article-modal-kind"></div>
+        <div class="article-panel-title" id="article-modal-title"></div>
+      </div>
+      <button class="icon-button" type="button" id="article-modal-close" aria-label="Close editor"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="article-panel-body">
+      <div>
+        <div class="article-preview" id="article-preview"></div>
+        <label class="article-upload">
+          <i class="ti ti-photo"></i>
+          <span>Upload photo</span>
+          <input type="file" id="article-image-input" accept="image/*">
+        </label>
+      </div>
+      <div class="article-fields">
+        <label class="field-label">Title
+          <input class="field-control" id="article-title-input" type="text" placeholder="Untitled article">
+        </label>
+        <label class="field-label">Deck
+          <textarea class="field-control" id="article-deck-input" placeholder=""></textarea>
+        </label>
+        <label class="field-label">Body
+          <textarea class="field-control" id="article-body-input" placeholder=""></textarea>
+        </label>
+      </div>
+    </div>
+    <div class="article-actions">
+      <button class="action-button" type="button" id="article-reset-button"><i class="ti ti-arrow-back-up"></i><span>Reset</span></button>
+      <button class="action-button primary" type="button" id="article-save-button"><i class="ti ti-device-floppy"></i><span>Save</span></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const els = {
+    ticker: document.querySelector('#score-ticker'),
+    hero: document.querySelector('#hero-card'),
+    stories: document.querySelector('#story-grid'),
+    headlines: document.querySelector('#headlines-list'),
+    scores: document.querySelector('#recent-scores'),
+    rankingsWeek: document.querySelector('#rankings-week'),
+    rankings: document.querySelector('#rankings-list'),
+    trending: document.querySelector('#trending-list'),
+    modal: document.querySelector('#article-modal'),
+    modalClose: document.querySelector('#article-modal-close'),
+    modalKind: document.querySelector('#article-modal-kind'),
+    modalTitle: document.querySelector('#article-modal-title'),
+    preview: document.querySelector('#article-preview'),
+    titleInput: document.querySelector('#article-title-input'),
+    deckInput: document.querySelector('#article-deck-input'),
+    bodyInput: document.querySelector('#article-body-input'),
+    imageInput: document.querySelector('#article-image-input'),
+    saveButton: document.querySelector('#article-save-button'),
+    resetButton: document.querySelector('#article-reset-button')
+  };
+
+  const STORAGE_KEY = 'cfb27-article-edits';
+  let appData = null;
+  let activeArticleId = null;
+  let pendingImageData = '';
+  let articleEdits = readArticleEdits();
+
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[char]);
+
+  const teamClass = (team) => team.winner ? 'ticker-winner' : '';
+  const rankPill = (rank) => rank ? `<span class="rank-pill">${escapeHtml(rank)}</span>` : '';
+
+  function readArticleEdits() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    } catch {
+      return {};
+    }
+  }
+
+  function writeArticleEdits() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(articleEdits));
+  }
+
+  function cloneArticle(item) {
+    const saved = articleEdits[item.id] || {};
+    return { ...item, ...saved };
+  }
+
+  const teamLogos = {
+    'indiana': 'FBS-Logo-Library/CFB%20Logos/Indiana_Hoosiers_logo-300x300.png',
+    'miami': 'FBS-Logo-Library/CFB%20Logos/Miami_Hurricanes_logo-300x300.png',
+    'florida': 'FBS-Logo-Library/CFB%20Logos/Florida_Gators_logo-300x300.png',
+    'ole miss': 'FBS-Logo-Library/CFB%20Logos/Ole_Miss_Rebels_logo-300x300.png',
+    'oregon': 'FBS-Logo-Library/CFB%20Logos/Oregon_Ducks_logo-300x300.png',
+    'ohio state': 'FBS-Logo-Library/CFB%20Logos/Ohio_State_Buckeyes_logo-300x300.png',
+    'georgia': 'FBS-Logo-Library/CFB%20Logos/Georgia_Bulldogs_logo-300x300.png',
+    'texas tech': 'FBS-Logo-Library/CFB%20Logos/Texas_Tech_Red_Raiders_logo-300x300.png',
+    'texas a&m': 'FBS-Logo-Library/CFB%20Logos/Texas_AM_University_logo-300x300.png',
+    'alabama': 'FBS-Logo-Library/CFB%20Logos/Alabama_Crimson_Tide_logo-300x300.png',
+    'notre dame': 'FBS-Logo-Library/CFB%20Logos/Notre_Dame_Fighting_Irish_logo-300x300.png',
+    'byu': 'FBS-Logo-Library/CFB%20Logos/BYU_Cougars_logo-300x300.png',
+    'texas': 'FBS-Logo-Library/CFB%20Logos/Texas_Longhorns_logo-300x300.png',
+    'oklahoma': 'FBS-Logo-Library/CFB%20Logos/Oklahoma_Sooners_logo-300x300.png',
+    'utah': 'FBS-Logo-Library/CFB%20Logos/Utah_Utes_logo-300x300.png',
+    'vanderbilt': 'FBS-Logo-Library/CFB%20Logos/Vanderbilt_Commodores_logo-300x300.png',
+    'virginia': 'FBS-Logo-Library/CFB%20Logos/Virginia_Cavaliers_logo-300x300.png',
+    'iowa': 'FBS-Logo-Library/CFB%20Logos/Iowa_Hawkeyes_logo-300x300.png',
+    'tulane': 'FBS-Logo-Library/CFB%20Logos/Tulane_Green_Wave_logo-300x300.png',
+    'james madison': 'FBS-Logo-Library/CFB%20Logos/James_Madison_Dukes_logo-300x300.png',
+    'usc': 'FBS-Logo-Library/CFB%20Logos/USC_Trojans_logo-300x300.png',
+    'michigan': 'FBS-Logo-Library/CFB%20Logos/Michigan_Wolverines_logo-300x300.png',
+    'houston': 'FBS-Logo-Library/CFB%20Logos/Houston_Cougars_logo-300x300.png',
+    'navy': 'FBS-Logo-Library/CFB%20Logos/Navy_Midshipmen_logo-300x300.png',
+    'north texas': 'FBS-Logo-Library/CFB%20Logos/North_Texas_Mean_Green_logo-300x300.png'
+  };
+
+  function buildRankLookup(rankings) {
+    return new Map(rankings.map((team) => [team.team.toLowerCase(), team.rank]));
+  }
+
+  function rankedTeamName(team, rankLookup, rankClass) {
+    const rank = rankLookup.get(team.team.toLowerCase());
+    const rankBadge = rank ? `<span class="${rankClass}">${escapeHtml(rank)}</span>` : '';
+    return `${rankBadge}${escapeHtml(team.team)}`;
+  }
+
+  function renderTicker(games, rankLookup) {
+    els.ticker.innerHTML = games.map((game) => `
+      <div class="ticker-game">
+        <div class="ticker-team"><span class="ticker-team-name ${teamClass(game.away)}">${rankedTeamName(game.away, rankLookup, 'ticker-rank')}</span><span class="ticker-score ${teamClass(game.away)}">${escapeHtml(game.away.score)}</span></div>
+        <div class="ticker-team"><span class="ticker-team-name ${teamClass(game.home)}">${rankedTeamName(game.home, rankLookup, 'ticker-rank')}</span><span class="ticker-score ${teamClass(game.home)}">${escapeHtml(game.home.score)}</span></div>
+        <div class="ticker-status">${escapeHtml(game.status)} ${game.live ? '<span class="live-badge">LIVE</span>' : ''}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderHero(hero) {
+    els.hero.innerHTML = `
+      <div class="hero-img">
+        <div class="hero-badge">${escapeHtml(hero.badge)}</div>
+        <i class="ti ${escapeHtml(hero.icon)} hero-icon"></i>
+      </div>
+      <div class="hero-content">
+        <div class="story-tag">${escapeHtml(hero.tag)}</div>
+        <div class="hero-title">${escapeHtml(hero.title)}</div>
+        <div class="hero-desc">${escapeHtml(hero.description)}</div>
+      </div>
+    `;
+  }
+
+  function renderStories(stories) {
+    els.stories.innerHTML = stories.map((story) => {
+      const item = cloneArticle(story);
+      const preview = item.image
+        ? `<img class="story-photo" src="${escapeHtml(item.image)}" alt="">`
+        : `<i class="ti ${escapeHtml(item.icon)} story-icon"></i>`;
+
+      return `
+      <button type="button" class="story-card" data-article-id="${escapeHtml(item.id)}">
+        <div class="story-img" style="background:${escapeHtml(story.background)};">
+          ${preview}
+        </div>
+        <div class="story-content">
+          <div class="story-tag">${escapeHtml(item.tag)}</div>
+          <div class="story-title">${escapeHtml(item.title || 'Untitled article')}</div>
+        </div>
+      </button>
+    `; }).join('');
+  }
+
+  function renderHeadlines(headlines) {
+    els.headlines.innerHTML = headlines.map((headline) => {
+      const item = cloneArticle(headline);
+      const thumb = item.image ? `<img class="headline-thumb" src="${escapeHtml(item.image)}" alt="">` : `<div class="hl-dot">*</div>`;
+
+      return `
+      <button type="button" class="headline-item" data-article-id="${escapeHtml(item.id)}">
+        ${thumb}
+        <div class="headline-text">
+          <div class="headline-tag">${escapeHtml(item.tag)}</div>
+          <span class="headline-text-inner">${escapeHtml(item.title || 'Untitled headline')}</span>
+        </div>
+      </button>
+    `; }).join('');
+  }
+
+  function renderNextWeek(games, rankLookup) {
+    const upcomingGames = games.filter((game) => game.away.score === '--' && game.home.score === '--');
+    const nextWeek = Math.min(...upcomingGames.map((game) => game.week));
+    const nextWeekGames = upcomingGames.filter((game) => game.week === nextWeek);
+
+    if (!nextWeekGames.length) {
+      els.scores.innerHTML = '<div class="score-info">No upcoming games scheduled.</div>';
+      return;
+    }
+
+    els.scores.innerHTML = nextWeekGames.map((game) => `
+      <div class="score-card">
+        <div class="score-teams"><span>${rankPill(rankLookup.get(game.away.team.toLowerCase()))}${escapeHtml(game.away.team)}</span><span>${escapeHtml(game.away.score)}</span></div>
+        <div class="score-teams"><span>${rankPill(rankLookup.get(game.home.team.toLowerCase()))}${escapeHtml(game.home.team)}</span><span>${escapeHtml(game.home.score)}</span></div>
+        <div class="score-info">${escapeHtml(game.status)}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderRankings(rankings) {
+    els.rankings.innerHTML = rankings.map((team) => `
+      <div class="standings-row">
+        <div class="standings-team">
+          <span style="font-size:11px;color:#888;min-width:14px;">${escapeHtml(team.rank)}</span>
+          ${teamLogos[team.team.toLowerCase()] ? `<img class="rank-logo" src="${escapeHtml(teamLogos[team.team.toLowerCase()])}" alt="">` : `<div class="team-dot" style="background:${escapeHtml(team.color)};"></div>`}
+          ${escapeHtml(team.team)}
+        </div>
+        <span class="standings-rec">${escapeHtml(team.record)}</span>
+      </div>
+    `).join('');
+  }
+
+  function renderRankingsFilter(weeklyRankings, games) {
+    const selectedWeekValue = els.rankingsWeek.value || String(weeklyRankings[0]?.week ?? '');
+
+    els.rankingsWeek.innerHTML = weeklyRankings.map((week) => `
+      <option value="${escapeHtml(week.week)}">Week ${escapeHtml(week.week)}</option>
+    `).join('');
+    els.rankingsWeek.value = selectedWeekValue;
+
+    const showWeek = () => {
+      const selectedWeek = Number(els.rankingsWeek.value);
+      const selectedRankings = weeklyRankings.find((week) => week.week === selectedWeek);
+      const rankings = selectedRankings?.rankings ?? [];
+      const rankLookup = buildRankLookup(rankings);
+
+      renderRankings(rankings);
+      renderTicker(games, rankLookup);
+      renderNextWeek(games, rankLookup);
+    };
+
+    els.rankingsWeek.onchange = showWeek;
+    showWeek();
+  }
+
+  function renderTrending(items) {
+    els.trending.innerHTML = items.map((item, index) => `
+      <div class="trending-item"><div class="trend-num">${index + 1}</div><div class="trend-text">${escapeHtml(item)}</div></div>
+    `).join('');
+  }
+
+  function findArticleById(id) {
+    if (!appData) return null;
+    const story = appData.stories.find((item) => item.id === id);
+    if (story) return { kind: 'Story', ...cloneArticle(story) };
+    const headline = appData.headlines.find((item) => item.id === id);
+    if (headline) return { kind: 'Headline', ...cloneArticle(headline) };
+    return null;
+  }
+
+  function renderPreview(article) {
+    if (article.image) {
+      els.preview.innerHTML = `<img src="${escapeHtml(article.image)}" alt="">`;
+      return;
+    }
+
+    els.preview.innerHTML = `
+      <div class="article-preview-fallback">
+        <i class="ti ${escapeHtml(article.icon || 'ti-photo')}"></i>
+      </div>
+    `;
+  }
+
+  function openArticleEditor(id) {
+    const article = findArticleById(id);
+    if (!article) return;
+
+    activeArticleId = id;
+    pendingImageData = article.image || '';
+    els.modalKind.textContent = article.kind;
+    els.modalTitle.textContent = article.title || 'Untitled article';
+    els.titleInput.value = article.title || '';
+    els.deckInput.value = article.deck || '';
+    els.bodyInput.value = article.body || '';
+    renderPreview(article);
+    els.modal.classList.add('open');
+    els.modal.setAttribute('aria-hidden', 'false');
+    els.titleInput.focus();
+  }
+
+  function closeArticleEditor() {
+    activeArticleId = null;
+    pendingImageData = '';
+    els.modal.classList.remove('open');
+    els.modal.setAttribute('aria-hidden', 'true');
+  }
+
+  function persistArticleEdits() {
+    if (!activeArticleId) return;
+
+    articleEdits[activeArticleId] = {
+      title: els.titleInput.value,
+      deck: els.deckInput.value,
+      body: els.bodyInput.value,
+      image: pendingImageData
+    };
+    writeArticleEdits();
+    renderDashboard(appData);
+    closeArticleEditor();
+  }
+
+  function resetArticleEdits() {
+    if (!activeArticleId) return;
+
+    delete articleEdits[activeArticleId];
+    writeArticleEdits();
+    renderDashboard(appData);
+    closeArticleEditor();
+  }
+
+  function handleImageUpload(file) {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      pendingImageData = String(reader.result || '');
+      renderPreview({
+        image: pendingImageData,
+        icon: findArticleById(activeArticleId)?.icon
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function bindArticleLaunchers() {
+    els.stories.onclick = (event) => {
+      const card = event.target.closest('[data-article-id]');
+      if (!card) return;
+      openArticleEditor(card.dataset.articleId);
+    };
+
+    els.headlines.onclick = (event) => {
+      const item = event.target.closest('[data-article-id]');
+      if (!item) return;
+      openArticleEditor(item.dataset.articleId);
+    };
+  }
+
+  function renderDashboard(data) {
+    appData = data;
+    renderHero(data.hero);
+    renderStories(data.stories);
+    renderHeadlines(data.headlines);
+    renderRankingsFilter(data.weeklyRankings, data.tickerGames);
+    renderTrending(data.trending);
+  }
+
+  bindArticleLaunchers();
+  els.modalClose.addEventListener('click', closeArticleEditor);
+  els.modal.addEventListener('click', (event) => {
+    if (event.target && event.target.dataset && event.target.dataset.closeModal) closeArticleEditor();
+  });
+  els.saveButton.addEventListener('click', persistArticleEdits);
+  els.resetButton.addEventListener('click', resetArticleEdits);
+  els.imageInput.addEventListener('change', (event) => handleImageUpload(event.target.files && event.target.files[0]));
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && els.modal.classList.contains('open')) closeArticleEditor();
+  });
+
+  fetch('data/dynasty.json')
+    .then((response) => {
+      if (!response.ok) throw new Error('Unable to load dynasty data');
+      return response.json();
+    })
+    .then(renderDashboard)
+    .catch((error) => {
+      console.error(error);
+      els.hero.innerHTML = '<div class="hero-content"><div class="hero-title">Unable to load dynasty data</div><div class="hero-desc">Start a local web server from the project folder and reload this page.</div></div>';
+    });
+</script>
+
+</body>
+</html>
