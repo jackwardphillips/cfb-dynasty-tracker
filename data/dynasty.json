@@ -1,0 +1,283 @@
+{
+  "dynasty": {
+    "name": "CFB 27 Dynasty",
+    "season": 2027,
+    "week": 11
+  },
+  "userTeams": [
+    {
+      "id": "san-diego-state",
+      "school": "San Diego State",
+      "mascot": "Aztecs",
+      "headCoach": "Donnel Pumphrey",
+      "color": "#A6192E",
+      "record": "0-0"
+    },
+    {
+      "id": "fresno-state",
+      "school": "Fresno State",
+      "mascot": "Bulldogs",
+      "headCoach": "David Carr",
+      "color": "#DB0032",
+      "record": "0-0"
+    }
+  ],
+  "tickerGames": [
+    {
+      "week": 1,
+      "away": { "team": "Fresno State", "score": "--", "winner": false },
+      "home": { "team": "USC", "score": "--", "winner": false },
+      "status": "Sep. 4 - 9:00 PM ET - FOX"
+    },
+    {
+      "week": 1,
+      "away": { "team": "Portland State", "score": "--", "winner": false },
+      "home": { "team": "San Diego State", "score": "--", "winner": false },
+      "status": "Sep. 5 - 9:30 PM ET - USA"
+    },
+    {
+      "week": 2,
+      "away": { "team": "San Diego State", "score": "--", "winner": false },
+      "home": { "team": "UCLA", "score": "--", "winner": false },
+      "status": "Sep. 12 - 7:15 PM ET - BTN"
+    },
+    {
+      "week": 2,
+      "away": { "team": "Sacramento State", "score": "--", "winner": false },
+      "home": { "team": "Fresno State", "score": "--", "winner": false },
+      "status": "Sep. 12 - 10:30 PM ET - CBSSN"
+    },
+    {
+      "week": 3,
+      "away": { "team": "James Madison", "score": "--", "winner": false },
+      "home": { "team": "San Diego State", "score": "--", "winner": false },
+      "status": "Sep. 19 - 10:00 PM ET - The CW"
+    },
+    {
+      "week": 3,
+      "away": { "team": "Fresno State", "score": "--", "winner": false },
+      "home": { "team": "San Jose State", "score": "--", "winner": false },
+      "status": "Sep. 19 - 11:00 PM ET - FS1"
+    },
+    {
+      "week": 4,
+      "away": { "team": "San Diego State", "score": "--", "winner": false },
+      "home": { "team": "Toledo", "score": "--", "winner": false },
+      "status": "Sep. 26 - Time TBA ET - TV TBA"
+    },
+    {
+      "week": 4,
+      "away": { "team": "Rice", "score": "--", "winner": false },
+      "home": { "team": "Fresno State", "score": "--", "winner": false },
+      "status": "Sep. 26 - 10:00 PM ET - The CW"
+    },
+    {
+      "week": 5,
+      "away": { "team": "Texas State", "score": "--", "winner": false },
+      "home": { "team": "San Diego State", "score": "--", "winner": false },
+      "status": "Oct. 3 - 10:30 PM ET - The CW"
+    },
+    {
+      "week": 5,
+      "away": { "team": "Fresno State", "score": "--", "winner": false },
+      "home": { "team": "Washington State", "score": "--", "winner": false },
+      "status": "Oct. 3 - 9:30 PM ET - USA"
+    },
+    {
+      "week": 6,
+      "away": { "team": "San Diego State", "score": "--", "winner": false },
+      "home": { "team": "Oregon State", "score": "--", "winner": false },
+      "status": "Oct. 10 - 6:00 PM ET - USA"
+    },
+    {
+      "week": 6,
+      "away": { "team": "Boise State", "score": "--", "winner": false },
+      "home": { "team": "Fresno State", "score": "--", "winner": false },
+      "status": "Oct. 10 - 10:30 PM ET - The CW"
+    },
+    {
+      "week": 7,
+      "away": { "team": "Fresno State", "score": "--", "winner": false },
+      "home": { "team": "San Diego State", "score": "--", "winner": false },
+      "status": "Oct. 17 - 10:30 PM ET - CBSSN"
+    },
+    {
+      "week": 8,
+      "away": { "team": "San Diego State", "score": "--", "winner": false },
+      "home": { "team": "Colorado State", "score": "--", "winner": false },
+      "status": "Oct. 24 - 6:30 PM ET - The CW"
+    },
+    {
+      "week": 9,
+      "away": { "team": "Washington State", "score": "--", "winner": false },
+      "home": { "team": "San Diego State", "score": "--", "winner": false },
+      "status": "Oct. 31 - 7:00 PM ET - CBSSN"
+    },
+    {
+      "week": 9,
+      "away": { "team": "Oregon State", "score": "--", "winner": false },
+      "home": { "team": "Fresno State", "score": "--", "winner": false },
+      "status": "Oct. 31 - 7:00-11:00 PM ET - USA"
+    },
+    {
+      "week": 10,
+      "away": { "team": "Fresno State", "score": "--", "winner": false },
+      "home": { "team": "Utah State", "score": "--", "winner": false },
+      "status": "Nov. 7 - 9:30 PM ET - USA"
+    },
+    {
+      "week": 11,
+      "away": { "team": "Utah State", "score": "--", "winner": false },
+      "home": { "team": "San Diego State", "score": "--", "winner": false },
+      "status": "Nov. 14 - 9:30 PM ET - USA"
+    },
+    {
+      "week": 11,
+      "away": { "team": "Fresno State", "score": "--", "winner": false },
+      "home": { "team": "Texas State", "score": "--", "winner": false },
+      "status": "Nov. 14 - 4:00 PM ET - The CW"
+    },
+    {
+      "week": 12,
+      "away": { "team": "San Diego State", "score": "--", "winner": false },
+      "home": { "team": "Boise State", "score": "--", "winner": false },
+      "status": "Nov. 21 - 9:30 PM ET - USA"
+    },
+    {
+      "week": 12,
+      "away": { "team": "Colorado State", "score": "--", "winner": false },
+      "home": { "team": "Fresno State", "score": "--", "winner": false },
+      "status": "Nov. 21 - 7:30 PM ET - The CW"
+    },
+    {
+      "week": 13,
+      "away": { "team": "San Diego State", "score": "--", "winner": false },
+      "home": { "team": "Fresno State", "score": "--", "winner": false },
+      "status": "Nov. 28 - Time TBA ET - Flex Game"
+    }
+  ],
+  "hero": {
+    "badge": "Dynasty Central",
+    "icon": "ti-trophy",
+    "title": "San Diego State and Fresno State open a new two-coach dynasty era",
+    "description": "Donnel Pumphrey takes over the Aztecs while David Carr returns to lead the Bulldogs. The Mountain West rivalry gets a new spotlight as both programs chase conference titles, recruiting wins, and bragging rights."
+  },
+  "stories": [
+    {
+      "id": "story-donnel-pumphrey",
+      "tag": "User Team",
+      "title": "Donnel Pumphrey starts his head coaching career at San Diego State",
+      "deck": "The Aztecs begin a new era with a familiar face in charge.",
+      "body": "",
+      "icon": "ti-run",
+      "background": "#1a2a1a",
+      "image": ""
+    },
+    {
+      "id": "story-david-carr",
+      "tag": "User Team",
+      "title": "David Carr returns to Fresno State looking to build a Bulldog contender",
+      "deck": "The Bulldogs hand the program to one of its most recognizable names.",
+      "body": "",
+      "icon": "ti-school",
+      "background": "#2a1a1a",
+      "image": ""
+    },
+    {
+      "id": "story-rivalry-watch",
+      "tag": "Rivalry Watch",
+      "title": "Aztecs and Bulldogs circle their matchup as the dynasty's first measuring stick",
+      "deck": "The first meeting between the two user teams will set the tone for the season.",
+      "body": "",
+      "icon": "ti-news",
+      "background": "#1a1a2a",
+      "image": ""
+    },
+    {
+      "id": "story-conference-race",
+      "tag": "Conference Race",
+      "title": "Mountain West title path runs through consistent recruiting and clean road wins",
+      "deck": "The top of the league should be decided by depth, discipline, and weekly execution.",
+      "body": "",
+      "icon": "ti-medal",
+      "background": "#1a2a2a",
+      "image": ""
+    }
+  ],
+  "headlines": [
+    {
+      "id": "headline-donnel",
+      "title": "San Diego State names Donnel Pumphrey head coach for the 2027 dynasty campaign",
+      "deck": "",
+      "body": "",
+      "image": ""
+    },
+    {
+      "id": "headline-david",
+      "title": "Fresno State announces David Carr as head coach, bringing a program legend back home",
+      "deck": "",
+      "body": "",
+      "image": ""
+    },
+    {
+      "id": "headline-rivalry",
+      "title": "Mountain West coaches expect Aztecs-Bulldogs rivalry to shape the conference race",
+      "deck": "",
+      "body": "",
+      "image": ""
+    },
+    {
+      "id": "headline-recruiting",
+      "title": "Both user programs begin season with clean recruiting boards and open depth chart questions",
+      "deck": "",
+      "body": "",
+      "image": ""
+    },
+    {
+      "id": "headline-launch",
+      "title": "Dynasty tracker launches with scores, rankings, headlines, and user-team notes",
+      "deck": "",
+      "body": "",
+      "image": ""
+    }
+  ],
+  "weeklyRankings": [
+    {
+      "week": 0,
+      "rankings": [
+        { "rank": 1, "team": "Indiana", "record": "0-0", "color": "#990000" },
+        { "rank": 2, "team": "Miami", "record": "0-0", "color": "#F47321" },
+        { "rank": 3, "team": "Florida", "record": "0-0", "color": "#0021A5" },
+        { "rank": 4, "team": "Ole Miss", "record": "0-0", "color": "#CE1126" },
+        { "rank": 5, "team": "Oregon", "record": "0-0", "color": "#154733" },
+        { "rank": 6, "team": "Ohio State", "record": "0-0", "color": "#BB0000" },
+        { "rank": 7, "team": "Georgia", "record": "0-0", "color": "#BA0C2F" },
+        { "rank": 8, "team": "Texas Tech", "record": "0-0", "color": "#CC0000" },
+        { "rank": 9, "team": "Texas A&M", "record": "0-0", "color": "#500000" },
+        { "rank": 10, "team": "Alabama", "record": "0-0", "color": "#9E1B32" },
+        { "rank": 11, "team": "Notre Dame", "record": "0-0", "color": "#0C2340" },
+        { "rank": 12, "team": "BYU", "record": "0-0", "color": "#002E5D" },
+        { "rank": 13, "team": "Texas", "record": "0-0", "color": "#BF5700" },
+        { "rank": 14, "team": "Oklahoma", "record": "0-0", "color": "#841617" },
+        { "rank": 15, "team": "Utah", "record": "0-0", "color": "#CC0000" },
+        { "rank": 16, "team": "Vanderbilt", "record": "0-0", "color": "#866D4B" },
+        { "rank": 17, "team": "Virginia", "record": "0-0", "color": "#232D4B" },
+        { "rank": 18, "team": "Iowa", "record": "0-0", "color": "#FFCD00" },
+        { "rank": 19, "team": "Tulane", "record": "0-0", "color": "#006747" },
+        { "rank": 20, "team": "James Madison", "record": "0-0", "color": "#450084" },
+        { "rank": 21, "team": "USC", "record": "0-0", "color": "#990000" },
+        { "rank": 22, "team": "Michigan", "record": "0-0", "color": "#00274C" },
+        { "rank": 23, "team": "Houston", "record": "0-0", "color": "#C8102E" },
+        { "rank": 24, "team": "Navy", "record": "0-0", "color": "#00205B" },
+        { "rank": 25, "team": "North Texas", "record": "0-0", "color": "#00853E" }
+      ]
+    }
+  ],
+  "trending": [
+    "San Diego State season preview under Donnel Pumphrey",
+    "Fresno State season preview under David Carr",
+    "Mountain West title race power ratings",
+    "User rivalry watch: Aztecs vs. Bulldogs",
+    "Recruiting needs for both dynasty programs"
+  ]
+}

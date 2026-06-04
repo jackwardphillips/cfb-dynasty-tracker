@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>College Football - ESPN</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f0f0; }
+  .espn-nav { background: #CC0000; padding: 0 16px; display: flex; align-items: center; gap: 20px; height: 44px; }
+  .espn-logo { color: white; font-weight: 700; font-size: 20px; letter-spacing: -0.5px; }
+  .espn-nav-links { display: flex; gap: 18px; }
+  .espn-nav-links a { color: rgba(255,255,255,0.85); font-size: 13px; text-decoration: none; }
+  .espn-nav-links a:hover { color: white; }
+  .espn-subnav { background: #1a1a1a; padding: 0 16px; display: flex; gap: 20px; height: 38px; align-items: center; border-bottom: 2px solid #CC0000; overflow-x: auto; }
+  .espn-subnav a { color: rgba(255,255,255,0.75); font-size: 12px; text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
+  .espn-subnav a.active { color: white; border-bottom: 2px solid #CC0000; padding-bottom: 10px; margin-bottom: -2px; }
+  .score-ticker { background: #1a1a1a; padding: 10px 16px; display: flex; gap: 24px; overflow-x: auto; border-bottom: 1px solid #333; }
+  .ticker-game { display: flex; flex-direction: column; gap: 2px; min-width: 130px; }
+  .ticker-team { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .ticker-team span { color: white; font-size: 12px; font-weight: 500; }
+  .ticker-score { color: white; font-size: 12px; font-weight: 500; }
+  .ticker-winner { color: #FFD700 !important; }
+  .ticker-team-name { display: inline-flex; align-items: baseline; gap: 4px; min-width: 0; }
+  .ticker-team .ticker-rank { color: #aaa; font-size: 9px; font-weight: 700; line-height: 1; min-width: 10px; transform: translateY(1px); }
+  .ticker-status { color: #aaa; font-size: 10px; text-transform: uppercase; margin-top: 2px; }
+  .live-badge { background: #CC0000; color: white; font-size: 9px; font-weight: 600; padding: 1px 5px; border-radius: 2px; letter-spacing: 0.5px; }
+  .espn-body { display: grid; grid-template-columns: 1fr 300px; gap: 16px; padding: 16px; max-width: 1040px; margin: 0 auto; }
+  .section-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #666; border-bottom: 1px solid #ddd; padding-bottom: 6px; margin-bottom: 12px; }
+  .hero-card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+  .hero-img { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); height: 200px; display: flex; align-items: center; justify-content: center; position: relative; }
+  .hero-badge { position: absolute; top: 12px; left: 12px; background: #CC0000; color: white; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 3px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .hero-icon { color: rgba(255,255,255,0.12); font-size: 64px; }
+  .hero-content { padding: 14px 16px; }
+  .hero-title { font-size: 17px; font-weight: 600; color: #111; line-height: 1.35; margin-bottom: 6px; }
+  .hero-desc { font-size: 13px; color: #555; line-height: 1.5; }
+  .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .story-card, .headline-item { appearance: none; border: 0; background: none; text-align: left; font: inherit; cursor: pointer; }
+  .story-card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden; }
+  .story-img { height: 100px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+  .story-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .story-img .story-photo { position: absolute; inset: 0; }
+  .story-img .story-icon { position: relative; z-index: 1; font-size: 40px; color: rgba(255,255,255,0.12); }
+  .story-content { padding: 10px 12px; }
+  .story-tag { font-size: 10px; font-weight: 700; color: #CC0000; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .story-title { font-size: 13px; font-weight: 500; color: #111; line-height: 1.35; }
+  .headlines-card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 14px 16px; margin-bottom: 16px; }
+  .headline-item { padding: 7px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; color: #222; line-height: 1.4; display: flex; align-items: flex-start; gap: 8px; width: 100%; }
+  .headline-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .hl-dot { color: #CC0000; margin-top: 5px; font-size: 8px; flex-shrink: 0; }
+  .headline-thumb { width: 28px; height: 28px; border-radius: 4px; object-fit: cover; flex-shrink: 0; background: #eee; }
+  .headline-text { flex: 1; min-width: 0; }
+  .sidebar-card { background: white; border: 1px solid #e0e0e0; border-radius: 10px; padding: 14px 16px; margin-bottom: 14px; }
+  .user-team { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+  .user-team:last-child { border-bottom: none; padding-bottom: 0; }
+  .user-team-main { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .user-team-name { font-size: 13px; font-weight: 600; color: #111; }
+  .user-team-coach { font-size: 11px; color: #777; margin-top: 2px; }
+  .score-card { padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
+  .score-card:last-child { border-bottom: none; }
+  .score-teams { display: flex; justify-content: space-between; font-size: 13px; font-weight: 500; }
+  .score-teams .winner { color: #111; }
+  .score-teams .loser { color: #888; }
+  .score-info { font-size: 11px; color: #888; margin-top: 2px; }
+  .rankings-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; border-bottom: 1px solid #ddd; padding-bottom: 6px; margin-bottom: 12px; }
+  .rankings-header .section-label { border-bottom: none; padding-bottom: 0; margin-bottom: 0; }
+  .week-select { border: 1px solid #d5d5d5; border-radius: 4px; background: white; color: #333; font-size: 11px; padding: 3px 6px; }
+  .rank-pill { font-size: 10px; color: #888; background: #f0f0f0; padding: 1px 5px; border-radius: 3px; margin-right: 4px; }
+  .standings-row { display: flex; justify-content: space-between; align-items: center; font-size: 12px; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
+  .standings-row:last-child { border-bottom: none; }
+  .standings-team { display: flex; align-items: center; gap: 6px; color: #111; }
+  .rank-logo { width: 16px; height: 16px; object-fit: contain; display: block; flex-shrink: 0; }
+  .standings-rec { color: #888; }
+  .team-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .trending-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+  .trending-item:last-child { border-bottom: none; }
+  .trend-num { font-size: 18px; font-weight: 600; color: #ccc; min-width: 20px; }
+  .trend-text { font-size: 13px; color: #222; line-height: 1.3; }
+  .espn-footer { background: #1a1a1a; padding: 12px 16px; margin-top: 8px; }
+  .espn-footer p { font-size: 11px; color: rgba(255,255,255,0.4); text-align: center; }
+  .article-modal { position: fixed; inset: 0; z-index: 50; display: none; }
+  .article-modal.open { display: block; }
+  .article-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.55); }
+  .article-panel { position: relative; margin: 24px auto; width: min(920px, calc(100vw - 24px)); max-height: calc(100vh - 48px); overflow: auto; background: #fff; border-radius: 12px; border: 1px solid #d9d9d9; box-shadow: 0 24px 70px rgba(0,0,0,0.28); }
+  .article-panel-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 16px 16px 12px; border-bottom: 1px solid #ececec; }
+  .article-kicker { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #CC0000; margin-bottom: 4px; }
+  .article-panel-title { font-size: 16px; font-weight: 700; color: #111; line-height: 1.3; }
+  .icon-button { appearance: none; border: 1px solid #e0e0e0; background: #fff; color: #444; width: 32px; height: 32px; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+  .article-panel-body { display: grid; grid-template-columns: 260px 1fr; gap: 16px; padding: 16px; }
+  .article-preview { border: 1px solid #e5e5e5; border-radius: 10px; overflow: hidden; background: #f7f7f7; min-height: 320px; display: flex; align-items: center; justify-content: center; position: relative; }
+  .article-preview img { width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; }
+  .article-preview-fallback { color: rgba(255,255,255,0.18); display: flex; align-items: center; justify-content: center; font-size: 64px; width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
+  .article-upload { margin-top: 12px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 10px; border: 1px solid #d5d5d5; border-radius: 6px; background: #fff; color: #222; cursor: pointer; font-size: 12px; font-weight: 600; }
+  .article-upload input { display: none; }
+  .article-fields { display: grid; gap: 12px; }
+  .field-label { display: grid; gap: 6px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.9px; color: #666; }
+  .field-control { width: 100%; border: 1px solid #d9d9d9; border-radius: 8px; padding: 10px 12px; font: inherit; color: #111; background: #fff; }
+  .field-control:focus { outline: none; border-color: #b8b8b8; box-shadow: 0 0 0 2px rgba(204,0,0,0.08); }
+  .field-control textarea, textarea.field-control { min-height: 120px; resize: vertical; }
+  .article-actions { display: flex; justify-content: flex-end; gap: 8px; padding: 0 16px 16px; }
+  .action-button { appearance: none; border: 1px solid #d5d5d5; background: #fff; color: #222; border-radius: 6px; padding: 8px 12px; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .action-button.primary { background: #CC0000; border-color: #CC0000; color: #fff; }
+  @media (max-width: 700px) { .espn-body { grid-template-columns: 1fr; } .story-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 800px) { .article-panel-body { grid-template-columns: 1fr; } .article-preview { min-height: 220px; } }
+</style>
+</head>
+<body>
+
+<div class="espn-nav">
+  <div class="espn-logo">ESPN</div>
+  <div class="espn-nav-links">
+    <a href="#">Scores</a>
+    <a href="#">Watch</a>
+    <a href="#">NFL</a>
+    <a href="#">CFB</a>
+    <a href="#">NBA</a>
+    <a href="#">More</a>
+  </div>
+</div>
+
+<div class="espn-subnav">
+  <a href="#" class="active">Home</a>
+  <a href="#">Scores</a>
+  <a href="#">Schedule</a>
+  <a href="#">Standings</a>
+  <a href="#">Rankings</a>
+  <a href="#">Stats</a>
+  <a href="#">Recruiting</a>
+  <a href="#">Playoff</a>
+</div>
+
+<div class="score-ticker" id="score-ticker"></div>
+
+<div class="espn-body">
+  <div class="main-col">
+    <div class="hero-card" id="hero-card"></div>
+    <div class="story-grid" id="story-grid"></div>
+    <div class="headlines-card">
+      <div class="section-label">Top Headlines</div>
+      <div id="headlines-list"></div>
+    </div>
+  </div>
+
+  <div class="sidebar">
+    <div class="sidebar-card">
+      <div class="section-label">Next Week</div>
+      <div id="recent-scores"></div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="rankings-header">
+        <div class="section-label">AP Top 25</div>
+        <select class="week-select" id="rankings-week"></select>
+      </div>
+      <div id="rankings-list"></div>
+    </div>
+
+    <div class="sidebar-card">
+      <div class="section-label">Trending</div>
+      <div id="trending-list"></div>
+    </div>
+  </div>
+</div>
+
+<div class="espn-footer">
+  <p>&copy; 2027 ESPN Inc. All rights reserved. Use of this site constitutes acceptance of our Terms of Use and Privacy Policy.</p>
+</div>
+
+<div class="article-modal" id="article-modal" aria-hidden="true">
+  <div class="article-backdrop" data-close-modal="1"></div>
+  <div class="article-panel" role="dialog" aria-modal="true" aria-labelledby="article-modal-title">
+    <div class="article-panel-header">
+      <div>
+        <div class="article-kicker" id="article-modal-kind"></div>
+        <div class="article-panel-title" id="article-modal-title"></div>
+      </div>
+      <button class="icon-button" type="button" id="article-modal-close" aria-label="Close editor"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="article-panel-body">
+      <div>
+        <div class="article-preview" id="article-preview"></div>
+        <label class="article-upload">
+          <i class="ti ti-photo"></i>
+          <span>Upload photo</span>
+          <input type="file" id="article-image-input" accept="image/*">
+        </label>
+      </div>
+      <div class="article-fields">
+        <label class="field-label">Title
+          <input class="field-control" id="article-title-input" type="text" placeholder="Untitled article">
+        </label>
+        <label class="field-label">Deck
+          <textarea class="field-control" id="article-deck-input" placeholder=""></textarea>
+        </label>
+        <label class="field-label">Body
+          <textarea class="field-control" id="article-body-input" placeholder=""></textarea>
+        </label>
+      </div>
+    </div>
+    <div class="article-actions">
+      <button class="action-button" type="button" id="article-reset-button"><i class="ti ti-arrow-back-up"></i><span>Reset</span></button>
+      <button class="action-button primary" type="button" id="article-save-button"><i class="ti ti-device-floppy"></i><span>Save</span></button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const els = {
+    ticker: document.querySelector('#score-ticker'),
+    hero: document.querySelector('#hero-card'),
+    stories: document.querySelector('#story-grid'),
+    headlines: document.querySelector('#headlines-list'),
+    scores: document.querySelector('#recent-scores'),
+    rankingsWeek: document.querySelector('#rankings-week'),
+    rankings: document.querySelector('#rankings-list'),
+    trending: document.querySelector('#trending-list'),
+    modal: document.querySelector('#article-modal'),
+    modalClose: document.querySelector('#article-modal-close'),
+    modalKind: document.querySelector('#article-modal-kind'),
+    modalTitle: document.querySelector('#article-modal-title'),
+    preview: document.querySelector('#article-preview'),
+    titleInput: document.querySelector('#article-title-input'),
+    deckInput: document.querySelector('#article-deck-input'),
+    bodyInput: document.querySelector('#article-body-input'),
+    imageInput: document.querySelector('#article-image-input'),
+    saveButton: document.querySelector('#article-save-button'),
+    resetButton: document.querySelector('#article-reset-button')
+  };
+
+  const STORAGE_KEY = 'cfb27-article-edits';
+  let appData = null;
+  let activeArticleId = null;
+  let pendingImageData = '';
+  let articleEdits = readArticleEdits();
+
+  const escapeHtml = (value) => String(value ?? '').replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[char]);
+
+  const teamClass = (team) => team.winner ? 'ticker-winner' : '';
+  const rankPill = (rank) => rank ? `<span class="rank-pill">${escapeHtml(rank)}</span>` : '';
+
+  function readArticleEdits() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+    } catch {
+      return {};
+    }
+  }
+
+  function writeArticleEdits() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(articleEdits));
+  }
+
+  function cloneArticle(item) {
+    const saved = articleEdits[item.id] || {};
+    return { ...item, ...saved };
+  }
+
+  const teamLogos = {
+    'indiana': 'FBS-Logo-Library/CFB%20Logos/Indiana_Hoosiers_logo-300x300.png',
+    'miami': 'FBS-Logo-Library/CFB%20Logos/Miami_Hurricanes_logo-300x300.png',
+    'florida': 'FBS-Logo-Library/CFB%20Logos/Florida_Gators_logo-300x300.png',
+    'ole miss': 'FBS-Logo-Library/CFB%20Logos/Ole_Miss_Rebels_logo-300x300.png',
+    'oregon': 'FBS-Logo-Library/CFB%20Logos/Oregon_Ducks_logo-300x300.png',
+    'ohio state': 'FBS-Logo-Library/CFB%20Logos/Ohio_State_Buckeyes_logo-300x300.png',
+    'georgia': 'FBS-Logo-Library/CFB%20Logos/Georgia_Bulldogs_logo-300x300.png',
+    'texas tech': 'FBS-Logo-Library/CFB%20Logos/Texas_Tech_Red_Raiders_logo-300x300.png',
+    'texas a&m': 'FBS-Logo-Library/CFB%20Logos/Texas_AM_University_logo-300x300.png',
+    'alabama': 'FBS-Logo-Library/CFB%20Logos/Alabama_Crimson_Tide_logo-300x300.png',
+    'notre dame': 'FBS-Logo-Library/CFB%20Logos/Notre_Dame_Fighting_Irish_logo-300x300.png',
+    'byu': 'FBS-Logo-Library/CFB%20Logos/BYU_Cougars_logo-300x300.png',
+    'texas': 'FBS-Logo-Library/CFB%20Logos/Texas_Longhorns_logo-300x300.png',
+    'oklahoma': 'FBS-Logo-Library/CFB%20Logos/Oklahoma_Sooners_logo-300x300.png',
+    'utah': 'FBS-Logo-Library/CFB%20Logos/Utah_Utes_logo-300x300.png',
+    'vanderbilt': 'FBS-Logo-Library/CFB%20Logos/Vanderbilt_Commodores_logo-300x300.png',
+    'virginia': 'FBS-Logo-Library/CFB%20Logos/Virginia_Cavaliers_logo-300x300.png',
+    'iowa': 'FBS-Logo-Library/CFB%20Logos/Iowa_Hawkeyes_logo-300x300.png',
+    'tulane': 'FBS-Logo-Library/CFB%20Logos/Tulane_Green_Wave_logo-300x300.png',
+    'james madison': 'FBS-Logo-Library/CFB%20Logos/James_Madison_Dukes_logo-300x300.png',
+    'usc': 'FBS-Logo-Library/CFB%20Logos/USC_Trojans_logo-300x300.png',
+    'michigan': 'FBS-Logo-Library/CFB%20Logos/Michigan_Wolverines_logo-300x300.png',
+    'houston': 'FBS-Logo-Library/CFB%20Logos/Houston_Cougars_logo-300x300.png',
+    'navy': 'FBS-Logo-Library/CFB%20Logos/Navy_Midshipmen_logo-300x300.png',
+    'north texas': 'FBS-Logo-Library/CFB%20Logos/North_Texas_Mean_Green_logo-300x300.png'
+  };
+
+  function buildRankLookup(rankings) {
+    return new Map(rankings.map((team) => [team.team.toLowerCase(), team.rank]));
+  }
+
+  function rankedTeamName(team, rankLookup, rankClass) {
+    const rank = rankLookup.get(team.team.toLowerCase());
+    const rankBadge = rank ? `<span class="${rankClass}">${escapeHtml(rank)}</span>` : '';
+    return `${rankBadge}${escapeHtml(team.team)}`;
+  }
+
+  function renderTicker(games, rankLookup) {
+    els.ticker.innerHTML = games.map((game) => `
+      <div class="ticker-game">
+        <div class="ticker-team"><span class="ticker-team-name ${teamClass(game.away)}">${rankedTeamName(game.away, rankLookup, 'ticker-rank')}</span><span class="ticker-score ${teamClass(game.away)}">${escapeHtml(game.away.score)}</span></div>
+        <div class="ticker-team"><span class="ticker-team-name ${teamClass(game.home)}">${rankedTeamName(game.home, rankLookup, 'ticker-rank')}</span><span class="ticker-score ${teamClass(game.home)}">${escapeHtml(game.home.score)}</span></div>
+        <div class="ticker-status">${escapeHtml(game.status)} ${game.live ? '<span class="live-badge">LIVE</span>' : ''}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderHero(hero) {
+    els.hero.innerHTML = `
+      <div class="hero-img">
+        <div class="hero-badge">${escapeHtml(hero.badge)}</div>
+        <i class="ti ${escapeHtml(hero.icon)} hero-icon"></i>
+      </div>
+      <div class="hero-content">
+        <div class="hero-title">${escapeHtml(hero.title)}</div>
+        <div class="hero-desc">${escapeHtml(hero.description)}</div>
+      </div>
+    `;
+  }
+
+  function renderStories(stories) {
+    els.stories.innerHTML = stories.map((story) => {
+      const item = cloneArticle(story);
+      const preview = item.image
+        ? `<img class="story-photo" src="${escapeHtml(item.image)}" alt="">`
+        : `<i class="ti ${escapeHtml(item.icon)} story-icon"></i>`;
+
+      return `
+      <button type="button" class="story-card" data-article-id="${escapeHtml(item.id)}">
+        <div class="story-img" style="background:${escapeHtml(story.background)};">
+          ${preview}
+        </div>
+        <div class="story-content">
+          <div class="story-tag">${escapeHtml(item.tag)}</div>
+          <div class="story-title">${escapeHtml(item.title || 'Untitled article')}</div>
+        </div>
+      </button>
+    `; }).join('');
+  }
+
+  function renderHeadlines(headlines) {
+    els.headlines.innerHTML = headlines.map((headline) => {
+      const item = cloneArticle(headline);
+      const thumb = item.image ? `<img class="headline-thumb" src="${escapeHtml(item.image)}" alt="">` : `<div class="hl-dot">*</div>`;
+
+      return `
+      <button type="button" class="headline-item" data-article-id="${escapeHtml(item.id)}">
+        ${thumb}
+        <span class="headline-text">${escapeHtml(item.title || 'Untitled headline')}</span>
+      </button>
+    `; }).join('');
+  }
+
+  function renderNextWeek(games, rankLookup) {
+    const upcomingGames = games.filter((game) => game.away.score === '--' && game.home.score === '--');
+    const nextWeek = Math.min(...upcomingGames.map((game) => game.week));
+    const nextWeekGames = upcomingGames.filter((game) => game.week === nextWeek);
+
+    if (!nextWeekGames.length) {
+      els.scores.innerHTML = '<div class="score-info">No upcoming games scheduled.</div>';
+      return;
+    }
+
+    els.scores.innerHTML = nextWeekGames.map((game) => `
+      <div class="score-card">
+        <div class="score-teams"><span>${rankPill(rankLookup.get(game.away.team.toLowerCase()))}${escapeHtml(game.away.team)}</span><span>${escapeHtml(game.away.score)}</span></div>
+        <div class="score-teams"><span>${rankPill(rankLookup.get(game.home.team.toLowerCase()))}${escapeHtml(game.home.team)}</span><span>${escapeHtml(game.home.score)}</span></div>
+        <div class="score-info">${escapeHtml(game.status)}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderRankings(rankings) {
+    els.rankings.innerHTML = rankings.map((team) => `
+      <div class="standings-row">
+        <div class="standings-team">
+          <span style="font-size:11px;color:#888;min-width:14px;">${escapeHtml(team.rank)}</span>
+          ${teamLogos[team.team.toLowerCase()] ? `<img class="rank-logo" src="${escapeHtml(teamLogos[team.team.toLowerCase()])}" alt="">` : `<div class="team-dot" style="background:${escapeHtml(team.color)};"></div>`}
+          ${escapeHtml(team.team)}
+        </div>
+        <span class="standings-rec">${escapeHtml(team.record)}</span>
+      </div>
+    `).join('');
+  }
+
+  function renderRankingsFilter(weeklyRankings, games) {
+    const selectedWeekValue = els.rankingsWeek.value || String(weeklyRankings[0]?.week ?? '');
+
+    els.rankingsWeek.innerHTML = weeklyRankings.map((week) => `
+      <option value="${escapeHtml(week.week)}">Week ${escapeHtml(week.week)}</option>
+    `).join('');
+    els.rankingsWeek.value = selectedWeekValue;
+
+    const showWeek = () => {
+      const selectedWeek = Number(els.rankingsWeek.value);
+      const selectedRankings = weeklyRankings.find((week) => week.week === selectedWeek);
+      const rankings = selectedRankings?.rankings ?? [];
+      const rankLookup = buildRankLookup(rankings);
+
+      renderRankings(rankings);
+      renderTicker(games, rankLookup);
+      renderNextWeek(games, rankLookup);
+    };
+
+    els.rankingsWeek.onchange = showWeek;
+    showWeek();
+  }
+
+  function renderTrending(items) {
+    els.trending.innerHTML = items.map((item, index) => `
+      <div class="trending-item"><div class="trend-num">${index + 1}</div><div class="trend-text">${escapeHtml(item)}</div></div>
+    `).join('');
+  }
+
+  function findArticleById(id) {
+    if (!appData) return null;
+    const story = appData.stories.find((item) => item.id === id);
+    if (story) return { kind: 'Story', ...cloneArticle(story) };
+    const headline = appData.headlines.find((item) => item.id === id);
+    if (headline) return { kind: 'Headline', ...cloneArticle(headline) };
+    return null;
+  }
+
+  function renderPreview(article) {
+    if (article.image) {
+      els.preview.innerHTML = `<img src="${escapeHtml(article.image)}" alt="">`;
+      return;
+    }
+
+    els.preview.innerHTML = `
+      <div class="article-preview-fallback">
+        <i class="ti ${escapeHtml(article.icon || 'ti-photo')}"></i>
+      </div>
+    `;
+  }
+
+  function openArticleEditor(id) {
+    const article = findArticleById(id);
+    if (!article) return;
+
+    activeArticleId = id;
+    pendingImageData = article.image || '';
+    els.modalKind.textContent = article.kind;
+    els.modalTitle.textContent = article.title || 'Untitled article';
+    els.titleInput.value = article.title || '';
+    els.deckInput.value = article.deck || '';
+    els.bodyInput.value = article.body || '';
+    renderPreview(article);
+    els.modal.classList.add('open');
+    els.modal.setAttribute('aria-hidden', 'false');
+    els.titleInput.focus();
+  }
+
+  function closeArticleEditor() {
+    activeArticleId = null;
+    pendingImageData = '';
+    els.modal.classList.remove('open');
+    els.modal.setAttribute('aria-hidden', 'true');
+  }
+
+  function persistArticleEdits() {
+    if (!activeArticleId) return;
+
+    articleEdits[activeArticleId] = {
+      title: els.titleInput.value,
+      deck: els.deckInput.value,
+      body: els.bodyInput.value,
+      image: pendingImageData
+    };
+    writeArticleEdits();
+    renderDashboard(appData);
+    closeArticleEditor();
+  }
+
+  function resetArticleEdits() {
+    if (!activeArticleId) return;
+
+    delete articleEdits[activeArticleId];
+    writeArticleEdits();
+    renderDashboard(appData);
+    closeArticleEditor();
+  }
+
+  function handleImageUpload(file) {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      pendingImageData = String(reader.result || '');
+      renderPreview({
+        image: pendingImageData,
+        icon: findArticleById(activeArticleId)?.icon
+      });
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function bindArticleLaunchers() {
+    els.stories.onclick = (event) => {
+      const card = event.target.closest('[data-article-id]');
+      if (!card) return;
+      openArticleEditor(card.dataset.articleId);
+    };
+
+    els.headlines.onclick = (event) => {
+      const item = event.target.closest('[data-article-id]');
+      if (!item) return;
+      openArticleEditor(item.dataset.articleId);
+    };
+  }
+
+  function renderDashboard(data) {
+    appData = data;
+    renderHero(data.hero);
+    renderStories(data.stories);
+    renderHeadlines(data.headlines);
+    renderRankingsFilter(data.weeklyRankings, data.tickerGames);
+    renderTrending(data.trending);
+  }
+
+  bindArticleLaunchers();
+  els.modalClose.addEventListener('click', closeArticleEditor);
+  els.modal.addEventListener('click', (event) => {
+    if (event.target && event.target.dataset && event.target.dataset.closeModal) closeArticleEditor();
+  });
+  els.saveButton.addEventListener('click', persistArticleEdits);
+  els.resetButton.addEventListener('click', resetArticleEdits);
+  els.imageInput.addEventListener('change', (event) => handleImageUpload(event.target.files && event.target.files[0]));
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && els.modal.classList.contains('open')) closeArticleEditor();
+  });
+
+  fetch('data/dynasty.json')
+    .then((response) => {
+      if (!response.ok) throw new Error('Unable to load dynasty data');
+      return response.json();
+    })
+    .then(renderDashboard)
+    .catch((error) => {
+      console.error(error);
+      els.hero.innerHTML = '<div class="hero-content"><div class="hero-title">Unable to load dynasty data</div><div class="hero-desc">Start a local web server from the project folder and reload this page.</div></div>';
+    });
+</script>
+
+</body>
+</html>
