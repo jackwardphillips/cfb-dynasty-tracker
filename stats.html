@@ -7,8 +7,11 @@
   <style>
     body { margin: 0; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f4f4; color: #333; }
     .espn-header { background: #CC0000; height: 50px; display: flex; align-items: center; padding: 0 16px; color: white; }
+    .espn-nav-links { display: flex; gap: 18px; }
+    .espn-nav-links a { color: rgba(255,255,255,0.85); font-size: 13px; text-decoration: none; }
+    .espn-nav-links a:hover { color: white; }
     .espn-logo { display: flex; align-items: center; margin-right: 24px; }
-    .espn-logo img { height: 22px; filter: brightness(0) invert(1); }
+    .espn-logo img { height: 28px; filter: brightness(0) invert(1); }
     .espn-subnav { background: #1a1a1a; padding: 0 16px; display: flex; gap: 20px; height: 38px; align-items: center; border-bottom: 2px solid #CC0000; overflow-x: auto; scrollbar-width: none; }
     .espn-subnav::-webkit-scrollbar { display: none; }
     .espn-subnav a { color: rgba(255,255,255,0.5); font-weight: 500; font-size: 12px; text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; }
@@ -22,6 +25,14 @@
 <body>
   <div class="espn-header">
     <div class="espn-logo"><img src="espn_full_logo.png" alt="ESPN"></div>
+    <div class="espn-nav-links">
+      <a href="#">Scores</a>
+      <a href="#">Watch</a>
+      <a href="#">NFL</a>
+      <a href="#">CFB</a>
+      <a href="#">NBA</a>
+      <a href="#">More</a>
+    </div>
   </div>
   <div class="espn-subnav">
     <a href="espn_cfb27_dynasty.html">Home</a>
