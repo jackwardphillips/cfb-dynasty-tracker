@@ -14,7 +14,11 @@
   .espn-nav-links { display: flex; gap: 18px; }
   .espn-nav-links a { color: rgba(255,255,255,0.85); font-size: 13px; text-decoration: none; }
   .espn-nav-links a:hover { color: white; }
-  .espn-subnav { background: #1a1a1a; padding: 0 16px; display: flex; gap: 20px; height: 38px; align-items: center; border-bottom: 2px solid #CC0000; overflow-x: auto; }
+  .espn-subnav { 
+    background: #1a1a1a; padding: 0 16px; display: flex; gap: 20px; height: 32px; align-items: center; border-bottom: 2px solid #CC0000; overflow-x: auto;
+    scrollbar-width: none; -ms-overflow-style: none;
+  }
+  .espn-subnav::-webkit-scrollbar { display: none; }
   .espn-subnav a { color: rgba(255,255,255,0.5); font-size: 12px; text-decoration: none; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; font-weight: 500; }
   .espn-subnav a.active { color: white; font-weight: 700; }
   .score-ticker { 
