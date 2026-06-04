@@ -27,133 +27,133 @@
       "week": 1,
       "away": { "team": "Fresno State", "score": "--", "winner": false },
       "home": { "team": "USC", "score": "--", "winner": false },
-      "status": "Sep. 4 - 9:00 PM ET - FOX"
+      "status": "Sep. 4 - 9:00 PM - FOX"
     },
     {
       "week": 1,
       "away": { "team": "Portland State", "score": "--", "winner": false },
       "home": { "team": "San Diego State", "score": "--", "winner": false },
-      "status": "Sep. 5 - 9:30 PM ET - USA"
+      "status": "Sep. 5 - 9:30 PM - USA"
     },
     {
       "week": 2,
       "away": { "team": "San Diego State", "score": "--", "winner": false },
       "home": { "team": "UCLA", "score": "--", "winner": false },
-      "status": "Sep. 12 - 7:15 PM ET - BTN"
+      "status": "Sep. 12 - 7:15 PM - BTN"
     },
     {
       "week": 2,
       "away": { "team": "Sacramento State", "score": "--", "winner": false },
       "home": { "team": "Fresno State", "score": "--", "winner": false },
-      "status": "Sep. 12 - 10:30 PM ET - CBSSN"
+      "status": "Sep. 12 - 10:30 PM - CBSSN"
     },
     {
       "week": 3,
       "away": { "team": "James Madison", "score": "--", "winner": false },
       "home": { "team": "San Diego State", "score": "--", "winner": false },
-      "status": "Sep. 19 - 10:00 PM ET - The CW"
+      "status": "Sep. 19 - 10:00 PM - The CW"
     },
     {
       "week": 3,
       "away": { "team": "Fresno State", "score": "--", "winner": false },
       "home": { "team": "San Jose State", "score": "--", "winner": false },
-      "status": "Sep. 19 - 11:00 PM ET - FS1"
+      "status": "Sep. 19 - 11:00 PM - FS1"
     },
     {
       "week": 4,
       "away": { "team": "San Diego State", "score": "--", "winner": false },
       "home": { "team": "Toledo", "score": "--", "winner": false },
-      "status": "Sep. 26 - Time TBA ET - TV TBA"
+      "status": "Sep. 26 - Time TBA - TV TBA"
     },
     {
       "week": 4,
       "away": { "team": "Rice", "score": "--", "winner": false },
       "home": { "team": "Fresno State", "score": "--", "winner": false },
-      "status": "Sep. 26 - 10:00 PM ET - The CW"
+      "status": "Sep. 26 - 10:00 PM - The CW"
     },
     {
       "week": 5,
       "away": { "team": "Texas State", "score": "--", "winner": false },
       "home": { "team": "San Diego State", "score": "--", "winner": false },
-      "status": "Oct. 3 - 10:30 PM ET - The CW"
+      "status": "Oct. 3 - 10:30 PM - The CW"
     },
     {
       "week": 5,
       "away": { "team": "Fresno State", "score": "--", "winner": false },
       "home": { "team": "Washington State", "score": "--", "winner": false },
-      "status": "Oct. 3 - 9:30 PM ET - USA"
+      "status": "Oct. 3 - 9:30 PM - USA"
     },
     {
       "week": 6,
       "away": { "team": "San Diego State", "score": "--", "winner": false },
       "home": { "team": "Oregon State", "score": "--", "winner": false },
-      "status": "Oct. 10 - 6:00 PM ET - USA"
+      "status": "Oct. 10 - 6:00 PM - USA"
     },
     {
       "week": 6,
       "away": { "team": "Boise State", "score": "--", "winner": false },
       "home": { "team": "Fresno State", "score": "--", "winner": false },
-      "status": "Oct. 10 - 10:30 PM ET - The CW"
+      "status": "Oct. 10 - 10:30 PM - The CW"
     },
     {
       "week": 7,
       "away": { "team": "Fresno State", "score": "--", "winner": false },
       "home": { "team": "San Diego State", "score": "--", "winner": false },
-      "status": "Oct. 17 - 10:30 PM ET - CBSSN"
+      "status": "Oct. 17 - 10:30 PM - CBSSN"
     },
     {
       "week": 8,
       "away": { "team": "San Diego State", "score": "--", "winner": false },
       "home": { "team": "Colorado State", "score": "--", "winner": false },
-      "status": "Oct. 24 - 6:30 PM ET - The CW"
+      "status": "Oct. 24 - 6:30 PM - The CW"
     },
     {
       "week": 9,
       "away": { "team": "Washington State", "score": "--", "winner": false },
       "home": { "team": "San Diego State", "score": "--", "winner": false },
-      "status": "Oct. 31 - 7:00 PM ET - CBSSN"
+      "status": "Oct. 31 - 7:00 PM - CBSSN"
     },
     {
       "week": 9,
       "away": { "team": "Oregon State", "score": "--", "winner": false },
       "home": { "team": "Fresno State", "score": "--", "winner": false },
-      "status": "Oct. 31 - 7:00-11:00 PM ET - USA"
+      "status": "Oct. 31 - 7:00-11:00 PM - USA"
     },
     {
       "week": 10,
       "away": { "team": "Fresno State", "score": "--", "winner": false },
       "home": { "team": "Utah State", "score": "--", "winner": false },
-      "status": "Nov. 7 - 9:30 PM ET - USA"
+      "status": "Nov. 7 - 9:30 PM - USA"
     },
     {
       "week": 11,
       "away": { "team": "Utah State", "score": "--", "winner": false },
       "home": { "team": "San Diego State", "score": "--", "winner": false },
-      "status": "Nov. 14 - 9:30 PM ET - USA"
+      "status": "Nov. 14 - 9:30 PM - USA"
     },
     {
       "week": 11,
       "away": { "team": "Fresno State", "score": "--", "winner": false },
       "home": { "team": "Texas State", "score": "--", "winner": false },
-      "status": "Nov. 14 - 4:00 PM ET - The CW"
+      "status": "Nov. 14 - 4:00 PM - The CW"
     },
     {
       "week": 12,
       "away": { "team": "San Diego State", "score": "--", "winner": false },
       "home": { "team": "Boise State", "score": "--", "winner": false },
-      "status": "Nov. 21 - 9:30 PM ET - USA"
+      "status": "Nov. 21 - 9:30 PM - USA"
     },
     {
       "week": 12,
       "away": { "team": "Colorado State", "score": "--", "winner": false },
       "home": { "team": "Fresno State", "score": "--", "winner": false },
-      "status": "Nov. 21 - 7:30 PM ET - The CW"
+      "status": "Nov. 21 - 7:30 PM - The CW"
     },
     {
       "week": 13,
       "away": { "team": "San Diego State", "score": "--", "winner": false },
       "home": { "team": "Fresno State", "score": "--", "winner": false },
-      "status": "Nov. 28 - Time TBA ET - Flex Game"
+      "status": "Nov. 28 - Time TBA - Flex Game"
     }
   ],
   "hero": {
