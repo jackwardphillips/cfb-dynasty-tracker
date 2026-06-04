@@ -13,7 +13,7 @@
   <div class="espn-nav-links"><a href="#">Scores</a><a href="#">Watch</a><a href="#">NFL</a><a href="#">CFB</a><a href="#">NBA</a><a href="#">More</a></div>
 </div>
 <div class="espn-subnav">
-  <a href="espn_cfb27_dynasty.html">Home</a><a href="scores.html">Scores</a><a href="schedule.html">Schedule</a><a href="standings.html">Standings</a><a href="rankings.html">Rankings</a><a href="stats.html" class="active">Stats</a><a href="recruiting.html">Recruiting</a><a href="playoff.html">Playoff</a>
+  <a href="espn_cfb27_dynasty.html">Home</a><a href="schedule.html">Schedule</a><a href="standings.html">Standings</a><a href="rankings.html">Rankings</a><a href="stats.html" class="active">Stats</a><a href="recruiting.html">Recruiting</a><a href="playoff.html">Playoff</a>
 </div>
 <div class="score-ticker" id="score-ticker"></div>
 <div class="espn-body">
@@ -42,7 +42,7 @@
   async function init() {
     const data = await AppModel.load();
     if (!data) return;
-    AppModel.renderTicker(document.getElementById('score-ticker'), data.tickerGames);
+    AppModel.renderTicker(document.getElementById('score-ticker'), data.tickerGames, AppModel.getRankLookup(data.dynasty.week));
     AppModel.renderPageNews(document.getElementById('page-news-list'), 'stats');
   }
   init();

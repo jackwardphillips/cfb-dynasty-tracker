@@ -14,7 +14,6 @@
 </div>
 <div class="espn-subnav">
   <a href="espn_cfb27_dynasty.html">Home</a>
-  <a href="scores.html">Scores</a>
   <a href="schedule.html">Schedule</a>
   <a href="standings.html" class="active">Standings</a>
   <a href="rankings.html">Rankings</a>
@@ -49,7 +48,7 @@
   async function init() {
     const data = await AppModel.load();
     if (!data) return;
-    AppModel.renderTicker(document.getElementById('score-ticker'), data.tickerGames);
+    AppModel.renderTicker(document.getElementById('score-ticker'), data.tickerGames, AppModel.getRankLookup(data.dynasty.week));
     AppModel.renderPageNews(document.getElementById('page-news-list'), 'standings');
     
     document.getElementById('data-table-body').innerHTML = data.userTeams.map(team => `

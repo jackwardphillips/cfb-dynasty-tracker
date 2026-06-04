@@ -6,15 +6,19 @@
 <title>College Football Schedule - ESPN</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <link rel="stylesheet" href="css/espn.css">
+<style>
+  .filter-bar { padding: 15px; border-bottom: 1px solid #ddd; display: flex; align-items: center; gap: 10px; }
+  .team-logo { width: 30px; height: 30px; margin-right: 10px; vertical-align: middle; }
+  .conf-logo { width: 25px; height: 25px; margin-left: 10px; vertical-align: middle; }
+</style>
 </head>
 <body>
 <div class="espn-nav">
   <div class="espn-logo"><img src="espn_full_logo.png" alt="ESPN"></div>
-  <div class="espn-nav-links"><a href="#">Scores</a><a href="#">Watch</a><a href="#">NFL</a><a href="#">CFB</a><a href="#">NBA</a><a href="#">More</a></div>
+  <div class="espn-nav-links"><a href="#">Watch</a><a href="#">NFL</a><a href="#">CFB</a><a href="#">NBA</a><a href="#">More</a></div>
 </div>
 <div class="espn-subnav">
   <a href="espn_cfb27_dynasty.html">Home</a>
-  <a href="scores.html">Scores</a>
   <a href="schedule.html" class="active">Schedule</a>
   <a href="standings.html">Standings</a>
   <a href="rankings.html">Rankings</a>
@@ -25,16 +29,19 @@
 <div class="score-ticker" id="score-ticker"></div>
 <div class="espn-body">
   <div class="main-col">
-    <div class="page-header">
-      <h1 class="page-title">2027 Schedule</h1>
-      <p class="page-subtitle">Complete week-by-week dynasty schedule</p>
+    <div class="page-header" style="display: flex; align-items: center; justify-content: space-between;">
+      <div>
+        <h1 class="page-title">26-27 Schedule</h1>
+        <p class="page-subtitle">View matchups and results</p>
+      </div>
+      <div class="team-select-wrapper">
+        <div class="team-select-trigger" id="team-trigger">
+          <span id="selected-team-text">Select Team</span>
+        </div>
+        <div class="team-options" id="team-options"></div>
+      </div>
     </div>
-    <div class="sidebar-card" style="padding: 0; overflow: hidden; border-radius: 10px;">
-      <table class="data-table">
-        <thead><tr><th>Week</th><th>Matchup</th><th>Status/TV</th></tr></thead>
-        <tbody id="data-table-body"></tbody>
-      </table>
-    </div>
+    <div class="schedule-container" id="schedule-cards"></div>
   </div>
   <div class="sidebar">
     <div class="sidebar-card">
@@ -46,21 +53,91 @@
 <div class="espn-footer"><p>&copy; 2027 ESPN Inc. All rights reserved.</p></div>
 <script src="js/app-model.js"></script>
 <script>
-  async function init() {
-    const data = await AppModel.load();
-    if (!data) return;
-    AppModel.renderTicker(document.getElementById('score-ticker'), data.tickerGames);
+  AppModel.initPage((data) => {
     AppModel.renderPageNews(document.getElementById('page-news-list'), 'schedule');
     
-    document.getElementById('data-table-body').innerHTML = data.tickerGames.map(game => `
-      <tr>
-        <td>Week ${game.week}</td>
-        <td>${game.away.team} at ${game.home.team}</td>
-        <td>${game.status}</td>
-      </tr>
-    `).join('');
-  }
-  init();
+    const trigger = document.getElementById('team-trigger');
+    const options = document.getElementById('team-options');
+    const container = document.getElementById('schedule-cards');
+    
+    // Toggle dropdown
+    trigger.onclick = () => options.classList.toggle('open');
+    
+    // Populate dropdown
+    data.userTeams.forEach(team => {
+        const option = document.createElement('div');
+        option.className = 'team-option';
+        option.innerHTML = `<img src="${AppModel.getTeamLogo(team.school)}" onerror="this.style.display='none'"> <span>${team.school}</span>`;
+        option.onclick = () => {
+            selectTeam(team.school);
+            options.classList.remove('open');
+        };
+        options.appendChild(option);
+    });
+
+    const selectTeam = (school) => {
+        document.getElementById('selected-team-text').innerHTML = `<img src="${AppModel.getTeamLogo(school)}" onerror="this.style.display='none'"> <span>${school}</span>`;
+        render(school);
+    };
+
+    const render = (selected) => {
+      console.log('Rendering schedule for:', selected);
+      const games = data.tickerGames.filter(g => {
+          const away = g.away.team.trim();
+          const home = g.home.team.trim();
+          return away === selected.trim() || home === selected.trim();
+      });
+      console.log('Filtered games found:', games.length);
+      
+      container.innerHTML = games.length ? games.map(game => {
+        const awayConf = AppModel.getConference(game.away.team);
+        const homeConf = AppModel.getConference(game.home.team);
+        const isConferenceGame = awayConf !== '' && awayConf === homeConf;
+        const confLogo = isConferenceGame ? AppModel.getConferenceLogo(awayConf) : '';
+        
+        const hasScore = game.away.score !== '--' || game.home.score !== '--';
+        
+        return `
+          <div class="schedule-card">
+              <div class="sched-header">
+                <span class="sched-week">Week ${game.week}</span>
+                ${hasScore ? `<span class="sched-result">${game.away.score} - ${game.home.score}</span>` : ''}
+              </div>
+              <div class="matchup-row">
+                <div class="team-container away-team">
+                  <span class="team-name">${game.away.team}</span>
+                  <img src="${AppModel.getTeamLogo(game.away.team)}" class="team-logo" onerror="this.style.display='none'">
+                </div>
+                <span class="at-label">at</span>
+                <div class="team-container home-team">
+                  <img src="${AppModel.getTeamLogo(game.home.team)}" class="team-logo" onerror="this.style.display='none'">
+                  <span class="team-name">${game.home.team}</span>
+                </div>
+
+              </div>
+            <div class="sched-meta">
+              <div class="sched-meta-left">
+                ${(function() {
+                    const loc = AppModel.getStadiumLocation(game.home.team);
+                    return loc ? `<span>${loc}</span>` : '';
+                })()}
+              </div>
+              <div class="sched-meta-center">
+                ${confLogo ? `<img src="${confLogo}" class="conf-logo">` : ''}
+              </div>
+              <div class="sched-meta-right">
+                <span>${hasScore ? 'Final' : game.status}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('') : '<p>No games found for this team.</p>';
+    };
+    
+    if (data.userTeams.length > 0) {
+        selectTeam(data.userTeams[0].school);
+    }
+  });
 </script>
 </body>
 </html>
